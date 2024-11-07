@@ -1,4 +1,4 @@
-package com.bnptest.tictactoe.states
+package com.bnptest.tictactoe.objects
 enum class SquareState {
     NONE,
     X,
