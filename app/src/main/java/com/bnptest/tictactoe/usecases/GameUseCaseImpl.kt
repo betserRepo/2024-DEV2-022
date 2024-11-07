@@ -34,44 +34,40 @@ class GameUseCaseImpl : GameUseCase {
     }
 
     private fun checkWinner(board: List<List<SquareState>>): WinnerState? {
-        var squareState: SquareState? = null
         // Check rows
-        board.forEach { row ->
-            checkConsecutive(row)?.let { squareState = it }
+        for (row in board) {
+            checkConsecutive(row)?.let { return WinnerState.valueOf(it.name) }
         }
 
         // Check columns
         for (col in board[0].indices) {
             val column = board.map { it[col] }
-            checkConsecutive(column)?.let { squareState = it }
+            checkConsecutive(column)?.let { return WinnerState.valueOf(it.name) }
         }
 
         // Check diagonals
         val diagonal1 = board.indices.map { board[it][it] }
-        checkConsecutive(diagonal1)?.let { squareState = it }
+        checkConsecutive(diagonal1)?.let { return WinnerState.valueOf(it.name) }
 
         val diagonal2 = board.indices.map { board[it][board.size - 1 - it] }
-        checkConsecutive(diagonal2)?.let { squareState = it }
+        checkConsecutive(diagonal2)?.let { return WinnerState.valueOf(it.name) }
 
-        return when (squareState) {
-            SquareState.X -> WinnerState.X
-            SquareState.O -> WinnerState.O
-            else -> {
-                // Check for draw
-                val isDraw =
-                    board.all { row -> row.all { it == SquareState.X || it == SquareState.O } }
-                if (isDraw) {
-                    WinnerState.DRAW
-                } else {
-                    null // Game ongoing
-                }
-            }
+        // Check for draw
+        val isDraw = board.all { row -> row.all { it == SquareState.X || it == SquareState.O } }
+        return if (isDraw) {
+            WinnerState.DRAW
+        } else {
+            null // Game ongoing
         }
     }
 
     private fun checkConsecutive(list: List<SquareState>): SquareState? {
-        return list.windowed(size = 3)
-            .find { window -> window.all { it == window.first() } }
-            ?.first()
+        return if (list.contains(SquareState.NONE)) {
+            null
+        } else {
+            list.windowed(size = 3)
+                .find { window -> window.all { it == window.first() } }
+                ?.first()
+        }
     }
 }
