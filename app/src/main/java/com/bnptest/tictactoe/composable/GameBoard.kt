@@ -9,7 +9,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
@@ -20,19 +19,15 @@ import com.bnptest.tictactoe.R
 import com.bnptest.tictactoe.intents.GameIntent
 import com.bnptest.tictactoe.objects.WinnerState
 import com.bnptest.tictactoe.ui.theme.TicTacToeTheme
-import com.bnptest.tictactoe.usecases.GameUseCaseImpl
 import com.bnptest.tictactoe.utils.Spacing.x0_125
 import com.bnptest.tictactoe.viewmodel.GameViewModel
 
 @Composable
 fun GameBoard(
+    viewModel: GameViewModel = viewModel(),
     modifier: Modifier = Modifier,
 ) {
     val context = LocalContext.current
-    val useCase = remember { GameUseCaseImpl() }
-    val viewModel: GameViewModel = viewModel(
-        factory = GameViewModel.Companion.Factory(useCase)
-    )
     val state = viewModel.state.collectAsState().value
 
     val winnerMessageTemplate = stringResource(R.string.tictactoe_winner_message)

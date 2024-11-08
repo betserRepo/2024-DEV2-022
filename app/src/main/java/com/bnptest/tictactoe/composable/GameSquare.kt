@@ -15,6 +15,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
@@ -52,6 +53,7 @@ internal fun RowScope.GameSquare(
 
     Box(
         modifier = modifier
+            .testTag("square_${row}_${col}")
             .weight(1f)
             .fillMaxSize()
             .padding(x0_5)
